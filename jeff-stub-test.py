@@ -59,7 +59,7 @@ def interesting_pieces_of_processed_url(url):
     return interesting_pieces
 
 # use however pytest says to do it
-assert interesting_pieces = original_pieces_I_put_in
+# assert interesting_pieces = original_pieces_I_put_in
 
 
 
