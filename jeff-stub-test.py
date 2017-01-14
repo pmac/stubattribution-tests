@@ -51,7 +51,7 @@ def process_url(source, medium, campaign, term):
 result1 = process_url("www.google.com", "paidsearch", "test_Brand-US-GGL-Exact", "download%20firefox")
 assert result1 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3Dgoogle%26medium%3Dpaidsearch%26campaign%3DBrand-US-GGL-Exact%26content%3D%28not+set%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
 
-result2 = process_url("yahoo, "giveaway", "test_campaign", "download%20firefox")
+result2 = process_url("yahoo", "giveaway", "test_campaign", "download%20firefox")
 assert result2 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3Dgoogle%26medium%3Dpaidsearch%26campaign%3DBrand-US-GGL-Exact%26content%3D%28not+set%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
 
 def interesting_pieces_of_processed_url(url):
