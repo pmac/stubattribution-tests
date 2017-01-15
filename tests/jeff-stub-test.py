@@ -33,7 +33,7 @@ original_url = "https:///en-US/firefox/new/?utm_source=google&utm_medium=paidsea
 
 def process_url(source, medium, campaign, term):
     base_url = 'www-demo4.allizom.org'
-    modified_url = "https://%s/en-US/firefox/new/?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s%20firefox" % (
+    modified_url = "https://{}/en-US/firefox/new/?utm_source={}&utm_medium={}&utm_campaign={}&utm_term={}%20firefox".format(
                base_url, source, medium, campaign, term)
 #    driver.get(original_url)
     driver.get(modified_url)
@@ -43,13 +43,15 @@ def process_url(source, medium, campaign, term):
     downloadButton.click()
     driver.implicitly_wait(8)
     downloadLink = driver.find_element_by_id("direct-download-link").get_attribute("href")
-    print "Stub Attribution download link is: %s" % downloadLink
+
+    print "Stub Attribution download link is:\n %s" % downloadLink
 
     return downloadLink
 
 # These are tests
-result1 = process_url("www.google.com", "paidsearch", "test_Brand-US-GGL-Exact", "download%20firefox")
-assert result1 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3Dgoogle%26medium%3Dpaidsearch%26campaign%3DBrand-US-GGL-Exact%26content%3D%28not+set%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
+
+result1 = process_url("google", "paidsearch", "test_Brand-US-GGL-Exact", "download%20firefox")
+assert result1 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3D{}%26medium%3D{}%26campaign%3D{}%26content%3D%28{}%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
 
 result2 = process_url("yahoo", "giveaway", "test_campaign", "download%20firefox")
 assert result2 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3Dgoogle%26medium%3Dpaidsearch%26campaign%3DBrand-US-GGL-Exact%26content%3D%28not+set%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
