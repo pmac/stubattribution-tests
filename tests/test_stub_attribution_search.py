@@ -1,4 +1,5 @@
 import os
+import pytest
 import urlparse
 
 from selenium import webdriver
