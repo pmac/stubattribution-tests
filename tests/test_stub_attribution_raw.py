@@ -1,7 +1,7 @@
 import os
+import urlparse
 
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
@@ -18,8 +18,8 @@ key=os.environ["SAUCE_ACCESS_KEY"]
 sauce_creds=':'.join([username,key])
 
 driver = webdriver.Remote(
-   command_executor='http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
-   desired_capabilities=desired_cap)
+   command_executor = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
+   desired_capabilities = desired_cap)
 
 
 driver.get("https://www-demo4.allizom.org/en-US/firefox/new/")
