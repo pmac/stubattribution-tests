@@ -19,8 +19,8 @@ key = os.environ["SAUCE_ACCESS_KEY"]
 sauce_creds = ':'.join([username,key])
 
 driver = webdriver.Remote(
-   command_executor = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
-   desired_capabilities = desired_cap)
+   command_executor='http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
+   desired_capabilities=desired_cap)
 
 def generate_url(source, medium, campaign, term):
     base_url = 'www-demo4.allizom.org'
