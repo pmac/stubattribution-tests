@@ -16,26 +16,20 @@ desired_cap = {
     'version': "54.0",
 }
 
-DOMAINS = ['.com', '.edu']
-SOURCES = ['google.com', 'twitter.com', 'yahoo.com']
-
-username=os.environ["SAUCE_USERNAME"]
-key=os.environ["SAUCE_ACCESS_KEY"]
-sauce_creds=':'.join([username,key])
+username = os.environ["SAUCE_USERNAME"]
+key = os.environ["SAUCE_ACCESS_KEY"]
+sauce_creds = ':'.join([username,key])
 
 driver = webdriver.Remote(
-   command_executor='http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
-   desired_capabilities=desired_cap)
-
-
-# original_url = "https:///en-US/firefox/new/?utm_source=google&utm_medium=paidsearch&utm_campaign=Brand-US-GGL-Exact&utm_term=download%20firefox"
-
+   command_executor = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
+   desired_capabilities = desired_cap)
 
 def generate_url(source, medium, campaign, term):
     base_url = 'www-demo4.allizom.org'
     generated_url = "https://{}/en-US/firefox/new/?utm_source={}&utm_medium={}&utm_campaign={}&utm_term={}".format(
                base_url, source, medium, campaign, term)
     return generated_url
+
 
 def derive_url(generated_url):
     driver.get(generated_url)
@@ -51,24 +45,12 @@ def derive_url(generated_url):
 
     return downloadLink
 
-def breakout(generated_url):
-# These are tests
 
+def breakout_utm_param_values(generated_url):
     parts = urlparse.urlparse(generated_url)
     scheme, netloc, path, params, query, fragment = parts
 
-# this could also be:
-# (scheme, netloc, path, params, query, fragment) = parts
-
-    print "original parts:"
-    print parts
-    print
-
     key_value_dict = urlparse.parse_qs(query)
-
-    print "query key value pairs:"
-    print key_value_dict
-    print
 
     attribution_code = key_value_dict['attribution_code']
 
@@ -79,38 +61,32 @@ def breakout(generated_url):
     # split on '&', into an array
     equal_pieces = first_element.split('&')
 
-    print "equal_pieces:"
-    print equal_pieces
-    print
-
     # Now split up the bunch of strings with 'a=b' in them, into tuples, of (a, b)
-
     equal_pieces_as_dict = {}
     for equal_piece in equal_pieces:
         key, value = equal_piece.split('=')
         equal_pieces_as_dict[key] = value
-
-    print "equal_pieces_as_dict:"
-    print equal_pieces_as_dict
-    print
     del equal_pieces_as_dict['content']
     del equal_pieces_as_dict['timestamp']
 
     return equal_pieces_as_dict
 
+
 def assert_good(new_dict, source, medium, campaign, term):
-    old_dict = {'source':source, 'medium':medium, 'campaign':campaign, 'term':term}
+    old_dict = {'source': source, 'medium': medium, 'campaign': campaign, 'term': term}
     del old_dict['term']
     print old_dict
     print new_dict
     assert new_dict == old_dict
 
+
 def test_one(source, medium, campaign, term):
     generated_url = generate_url(source, medium, campaign, term)
     derived_url = derive_url(generated_url)
-    new_dict = breakout(derived_url)
+    new_dict = breakout_utm_param_values(derived_url)
     assert_good(new_dict, source, medium, campaign, term)
 
 test_one("google", "paidsearch", "Fake%20campaign", "test term")
+
 
 driver.quit()
