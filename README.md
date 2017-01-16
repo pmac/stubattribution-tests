@@ -1,4 +1,5 @@
 # stubattribution-tests
+[![Build Status](https://travis-ci.org/stephendonner/stubattribution-tests.svg?branch=master)](https://travis-ci.org/stephendonner/stubattribution-tests)
 
 Placeholder repo, for now, to capture and hopefully develop load and automated functional tests for the [Stub Attribution service] (https://github.com/mozilla-services/stubattribution).
 
