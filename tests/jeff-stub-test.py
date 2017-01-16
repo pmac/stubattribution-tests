@@ -28,15 +28,18 @@ driver = webdriver.Remote(
    desired_capabilities=desired_cap)
 
 
-original_url = "https:///en-US/firefox/new/?utm_source=google&utm_medium=paidsearch&utm_campaign=Brand-US-GGL-Exact&utm_term=download%20firefox"
+# original_url = "https:///en-US/firefox/new/?utm_source=google&utm_medium=paidsearch&utm_campaign=Brand-US-GGL-Exact&utm_term=download%20firefox"
 
 
-def process_url(source, medium, campaign, term):
+def generate_url(source, medium, campaign, term):
     base_url = 'www-demo4.allizom.org'
-    modified_url = "https://{}/en-US/firefox/new/?utm_source={}&utm_medium={}&utm_campaign={}&utm_term={}%20firefox".format(
+    generated_url = "https://{}/en-US/firefox/new/?utm_source={}&utm_medium={}&utm_campaign={}&utm_term={}".format(
                base_url, source, medium, campaign, term)
-#    driver.get(original_url)
-    driver.get(modified_url)
+    return generated_url
+
+def derive_url(generated_url):
+    driver.get(generated_url)
+
     #downloadButton = WebDriverWait(driver, 10).until(lambda s: len(s.find_element_by_class_name('download-link button button-green').is_displayed()))
     driver.implicitly_wait(10)
     downloadButton = driver.find_element_by_id("download-button-desktop-release")
@@ -48,24 +51,66 @@ def process_url(source, medium, campaign, term):
 
     return downloadLink
 
+def breakout(generated_url):
 # These are tests
 
-result1 = process_url("google", "paidsearch", "test_Brand-US-GGL-Exact", "download%20firefox")
-assert result1 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3D{}%26medium%3D{}%26campaign%3D{}%26content%3D%28{}%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
+    parts = urlparse.urlparse(generated_url)
+    scheme, netloc, path, params, query, fragment = parts
 
-result2 = process_url("yahoo", "giveaway", "test_campaign", "download%20firefox")
-assert result2 == "https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3Dgoogle%26medium%3Dpaidsearch%26campaign%3DBrand-US-GGL-Exact%26content%3D%28not+set%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf"
+# this could also be:
+# (scheme, netloc, path, params, query, fragment) = parts
 
-def interesting_pieces_of_processed_url(url):
-    # TODO
-    return interesting_pieces
+    print "original parts:"
+    print parts
+    print
 
-# use however pytest says to do it
-# assert interesting_pieces = original_pieces_I_put_in
+    key_value_dict = urlparse.parse_qs(query)
 
+    print "query key value pairs:"
+    print key_value_dict
+    print
 
+    attribution_code = key_value_dict['attribution_code']
+
+    # The thing is an array -- I don't know why. But there's only one element, so
+    # just pick the first item off (ie ...[0])
+    first_element = attribution_code[0]
+
+    # split on '&', into an array
+    equal_pieces = first_element.split('&')
+
+    print "equal_pieces:"
+    print equal_pieces
+    print
+
+    # Now split up the bunch of strings with 'a=b' in them, into tuples, of (a, b)
+
+    equal_pieces_as_dict = {}
+    for equal_piece in equal_pieces:
+        key, value = equal_piece.split('=')
+        equal_pieces_as_dict[key] = value
+
+    print "equal_pieces_as_dict:"
+    print equal_pieces_as_dict
+    print
+    del equal_pieces_as_dict['content']
+    del equal_pieces_as_dict['timestamp']
+
+    return equal_pieces_as_dict
+
+def assert_good(new_dict, source, medium, campaign, term):
+    old_dict = {'source':source, 'medium':medium, 'campaign':campaign, 'term':term}
+    del old_dict['term']
+    print old_dict
+    print new_dict
+    assert new_dict == old_dict
+
+def test_one(source, medium, campaign, term):
+    generated_url = generate_url(source, medium, campaign, term)
+    derived_url = derive_url(generated_url)
+    new_dict = breakout(derived_url)
+    assert_good(new_dict, source, medium, campaign, term)
+
+test_one("google", "paidsearch", "Fake%20campaign", "test term")
 
 driver.quit()
-
-
-'''Stub Attribution download link is: https://bouncer-bouncer.stage.mozaws.net/?product=firefox-stub&os=win&lang=en-US&attribution_code=source%3Dgoogle%26medium%3Dpaidsearch%26campaign%3DBrand-US-GGL-Exact%26content%3D%28not+set%29%26timestamp%3D1484372769&attribution_sig=e026c51a3381b7ab205e51440086f980b037e5333de5537d9161ec27f06f47cf'''
