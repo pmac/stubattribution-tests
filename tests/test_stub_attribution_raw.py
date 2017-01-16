@@ -11,7 +11,7 @@ from selenium.common.exceptions import TimeoutException
 desired_cap = {
     'platform': "Windows 10",
     'browserName': "chrome",
-    'version': "54.0",
+    'version': "54.0"
 }
 
 username=os.environ["SAUCE_USERNAME"]
