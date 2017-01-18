@@ -79,6 +79,7 @@ def assert_good(new_dict, source, medium, campaign, content):
     print new_dict
     assert new_dict == old_dict
 
+
 def test_organic_flow_param_values(source, medium, campaign, content):
     # we:
     # 1. compare the values we expect from breaking out downloadLink in derive_url()
