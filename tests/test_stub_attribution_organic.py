@@ -20,7 +20,7 @@ key=os.environ["SAUCE_ACCESS_KEY"]
 sauce_creds=':'.join([username,key])
 
 driver = webdriver.Remote(
-   command_executor='http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
+    command_executor='http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
     desired_capabilities=desired_cap)
 
 def generate_url():
@@ -84,6 +84,7 @@ def test_organic_flow_param_values(source, medium, campaign, content):
     derived_url = derive_url(generated_url)
     new_dict = breakout_utm_param_values(derived_url)
     assert_good(new_dict, source, medium, campaign, content)
+
 
 test_organic_flow_param_values("www-demo4.allizom.org", "referral", "(not set)", "(not set)")
 
