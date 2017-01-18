@@ -76,13 +76,14 @@ def assert_good(new_dict, source, medium, campaign, term):
     assert new_dict == old_dict
 
 
-def test_one(source, medium, campaign, term):
+def test_campaign_flow_param_values(source, medium, campaign, term):
+    # here, we build our "generated" (i.e. expected) URL from our utm_* parameter values
     generated_url = generate_url(source, medium, campaign, term)
     derived_url = derive_url(generated_url)
     new_dict = breakout_utm_param_values(derived_url)
     assert_good(new_dict, source, medium, campaign, term)
 
-test_one("google", "paidsearch", "Fake%20campaign", "test term")
+test_campaign_flow_param_values("google", "paidsearch", "Fake%20campaign", "test term")
 
 
 driver.quit()
