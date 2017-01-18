@@ -21,7 +21,7 @@ sauce_creds=':'.join([username,key])
 
 driver = webdriver.Remote(
    command_executor = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
-   desired_capabilities = desired_cap)
+    desired_capabilities = desired_cap)
 
 def generate_url(source, medium, campaign, term):
     base_url = 'www-demo4.allizom.org'
@@ -80,6 +80,7 @@ def test_search_flow_param_values(source, medium, campaign, term):
     derived_url = derive_url(generated_url)
     new_dict = breakout_utm_param_values(derived_url)
     assert_good(new_dict, source, medium, campaign, term)
+
 
 test_search_flow_param_values("google", "paidsearch", "Brand-US-GGL-Exact", "download%20firefox")
 
