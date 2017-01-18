@@ -21,12 +21,12 @@ sauce_creds=':'.join([username,key])
 
 driver = webdriver.Remote(
    command_executor='http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
-   desired_capabilities=desired_cap)
+    desired_capabilities=desired_cap)
 
 def generate_url():
     base_url = 'www-demo4.allizom.org'
     generated_url = "https://{}/en-US/".format(
-               base_url)
+        base_url)
     return generated_url
 
 
