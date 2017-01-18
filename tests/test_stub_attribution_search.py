@@ -3,6 +3,7 @@ import pytest
 import urlparse
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
@@ -25,19 +26,16 @@ driver = webdriver.Remote(
 def generate_url(source, medium, campaign, term):
     base_url = 'www-demo4.allizom.org'
     generated_url = "https://{}/en-US/firefox/new/?utm_source={}&utm_medium={}&utm_campaign={}&utm_term={}".format(
-               base_url, source, medium, campaign, term)
+        base_url, source, medium, campaign, term)
     return generated_url
 
 def derive_url(generated_url):
     driver.get(generated_url)
 
-    #downloadButton = WebDriverWait(driver, 10).until(lambda s: len(s.find_element_by_class_name('download-link button button-green').is_displayed()))
-    driver.implicitly_wait(10)
-    downloadButton = driver.find_element_by_id("download-button-desktop-release")
+    downloadButton = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "download-button-desktop-release")))
     downloadButton.click()
-    driver.implicitly_wait(8)
     downloadLink = driver.find_element_by_id("direct-download-link").get_attribute("href")
-
     print "Stub Attribution download link is:\n %s" % downloadLink
 
     return downloadLink
