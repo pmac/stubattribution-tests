@@ -29,6 +29,7 @@ def generate_url(source, medium, campaign, term):
         base_url, source, medium, campaign, term)
     return generated_url
 
+
 def derive_url(generated_url):
     driver.get(generated_url)
 
