@@ -18,7 +18,7 @@ desired_cap = {
 
 username = os.environ["SAUCE_USERNAME"]
 key = os.environ["SAUCE_ACCESS_KEY"]
-sauce_creds = ':'.join([username,key])
+sauce_creds = ':'.join([username, key])
 
 
 driver = webdriver.Remote(
