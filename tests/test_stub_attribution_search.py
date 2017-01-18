@@ -75,13 +75,13 @@ def assert_good(new_dict, source, medium, campaign, term):
     assert new_dict == old_dict
 
 
-def test_one(source, medium, campaign, term):
+def test_search_flow_param_values(source, medium, campaign, term):
     generated_url = generate_url(source, medium, campaign, term)
     derived_url = derive_url(generated_url)
     new_dict = breakout_utm_param_values(derived_url)
     assert_good(new_dict, source, medium, campaign, term)
 
-test_one("google", "paidsearch", "Brand-US-GGL-Exact", "download%20firefox")
+test_search_flow_param_values("google", "paidsearch", "Brand-US-GGL-Exact", "download%20firefox")
 
 
 driver.quit()
