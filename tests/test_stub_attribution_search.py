@@ -15,9 +15,9 @@ desired_cap = {
     'version': "54.0"
 }
 
-username = os.environ["SAUCE_USERNAME"]
-key = os.environ["SAUCE_ACCESS_KEY"]
-sauce_creds = ':'.join([username,key])
+username=os.environ["SAUCE_USERNAME"]
+key=os.environ["SAUCE_ACCESS_KEY"]
+sauce_creds=':'.join([username,key])
 
 driver = webdriver.Remote(
    command_executor = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % sauce_creds,
