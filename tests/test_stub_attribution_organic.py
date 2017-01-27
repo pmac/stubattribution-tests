@@ -7,6 +7,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import querystringsafe_base64
+
 
 desired_cap = {
     'platform': "Windows 10",
@@ -53,14 +55,13 @@ def breakout_utm_param_values(generated_url):
 
     key_value_dict = urlparse.parse_qs(query)
 
-    attribution_code = key_value_dict['attribution_code']
-
     # The thing is an array -- I don't know why. But there's only one element, so
     # just pick the first item off (ie ...[0])
-    first_element = attribution_code[0]
+    attribution_code = key_value_dict['attribution_code'][0]
+    attribution_code = querystringsafe_base64.decode(attribution_code)
 
     # split on '&', into an array
-    equal_pieces = first_element.split('&')
+    equal_pieces = attribution_code.split('&')
 
     # Now split up the bunch of strings with 'a=b' in them, into tuples, of (a, b)
     equal_pieces_as_dict = {}
